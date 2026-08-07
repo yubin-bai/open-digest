@@ -1,0 +1,59 @@
+<view class="page custom">
+
+  <block wx:if="{{!topic}}">
+    <text class="title-lg">你想看什么？</text>
+    <text class="muted sub">一句话说清楚就行，越具体越准。想排除什么也可以直接写。</text>
+
+    <view class="card">
+      <textarea
+        class="input"
+        value="{{desc}}"
+        placeholder="比如：苹果和中国船舶的股价走势、财报和分析师观点"
+        placeholder-class="ph"
+        maxlength="200"
+        auto-height
+        bindinput="onInput"
+      />
+      <text class="counter">{{desc.length}}/200</text>
+    </view>
+
+    <view class="examples">
+      <text class="muted">试试这些：</text>
+      <view class="ex" data-text="独立游戏的新作发布和开发者访谈，不要大厂新闻" bindtap="onPickExample">
+        独立游戏的新作发布和开发者访谈，不要大厂新闻
+      </view>
+      <view class="ex" data-text="咖啡烘焙和萃取的技术讨论，不要器材测评" bindtap="onPickExample">
+        咖啡烘焙和萃取的技术讨论，不要器材测评
+      </view>
+      <view class="ex" data-text="Rust 和系统编程的新项目、语言特性变化" bindtap="onPickExample">
+        Rust 和系统编程的新项目、语言特性变化
+      </view>
+    </view>
+
+    <view class="footer-bar">
+      <view
+        class="btn-primary {{desc.length >= 2 && !building ? '' : 'disabled'}}"
+        bindtap="onBuild"
+      >{{building ? '正在理解…' : '生成方向'}}</view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <text class="title-lg">这样对吗？</text>
+    <text class="muted sub">确认后加进你的选择，还能再改。</text>
+
+    <view class="card preview">
+      <text class="pv-label">{{topic.label}}</text>
+      <text class="pv-focus">{{topic.focus}}</text>
+      <view class="pv-divider"></view>
+      <text class="pv-src-title">会从这些地方找</text>
+      <text class="pv-src">{{topic.preview}}</text>
+    </view>
+
+    <view class="footer-bar">
+      <text class="btn-ghost" bindtap="onRetry">重写</text>
+      <view class="btn-primary" bindtap="onConfirm">就要这个</view>
+    </view>
+  </block>
+
+</view>

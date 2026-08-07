@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/digest/index",
+    "pages/picker/index",
+    "pages/custom/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "是b的实验室",
+    "backgroundColor": "#f5f6f8",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

@@ -1,0 +1,107 @@
+.picker {
+  padding-bottom: 200rpx; /* 给底部固定条留位 */
+}
+
+.intro {
+  margin-bottom: 48rpx;
+}
+
+.intro-sub {
+  display: block;
+  margin-top: 16rpx;
+}
+
+.group {
+  margin-bottom: 40rpx;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.chip {
+  width: calc(50% - 10rpx);
+  box-sizing: border-box;
+  background: #fff;
+  border: 2rpx solid transparent;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  transition: all 0.15s;
+}
+
+.chip-on {
+  border-color: #07c160;
+  background: #f0fbf4;
+}
+
+.chip-label {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 500;
+  margin-bottom: 8rpx;
+}
+
+.chip-on .chip-label {
+  color: #07c160;
+}
+
+.chip-blurb {
+  display: block;
+  font-size: 24rpx;
+  color: #8c959f;
+  line-height: 1.5;
+}
+
+.custom-entry {
+  background: #fff;
+  border: 2rpx dashed #d0d7de;
+  border-radius: 16rpx;
+  padding: 28rpx;
+}
+
+.custom-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 500;
+  margin-bottom: 8rpx;
+}
+
+.custom-sub {
+  display: block;
+  font-size: 24rpx;
+  color: #8c959f;
+}
+
+.spacer {
+  height: 40rpx;
+}
+
+.picked {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  min-height: 88rpx;
+}
+
+.picked-count {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #07c160;
+}
+
+.picked-names {
+  font-size: 26rpx;
+  color: #8c959f;
+}
+
+.picked-tag {
+  font-size: 24rpx;
+  background: #f0fbf4;
+  color: #07c160;
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+}

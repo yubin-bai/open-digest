@@ -1,0 +1,69 @@
+# open-digest config — copy to digest.yaml and edit, or run `python wizard.py`.
+#
+# Everything the digest contains is defined here. There is no hardcoded topic
+# anywhere in the code: add a block under `topics:` and it becomes a section.
+
+title: My Daily Digest
+language: English          # any instruction works, e.g. "Chinese, technical terms in English"
+headline: true             # one-line overview at the top
+output_dir: data
+
+llm:
+  model: deepseek/deepseek-v4-pro          # any OpenRouter model id
+  fallback_model: anthropic/claude-fable-5 # used if the main model keeps failing
+  max_tokens: 2000
+
+delivery:
+  method: file             # file | resend | webhook
+  # to: you@example.com    # required for resend
+  # from: onboarding@resend.dev
+  # url: https://hooks.slack.com/...   # for webhook
+
+# ---------------------------------------------------------------------------
+# topics — one block per section. Delete these and write your own.
+#
+#   id            short slug, used as the key in the output JSON
+#   title         section heading in the email
+#   focus         what you want from this section, in plain language.
+#                 This is the highest-leverage field: it goes into the prompt
+#                 and decides what gets selected and what gets dropped.
+#   max_items     hard cap on items in the section
+#   summary_style how each item should be written
+#   sources       where to look — see SOURCES.md for every type and option
+# ---------------------------------------------------------------------------
+topics:
+  - id: ai
+    title: "AI & Machine Learning"
+    focus: >
+      Model releases, notable research results, and shifts in tooling.
+      Skip funding announcements and opinion pieces.
+    max_items: 5
+    summary_style: >
+      Each summary is 2-4 sentences: what the piece is about, then its core
+      method or finding, then the result or takeaway.
+    sources:
+      - type: news
+        queries: ["large language model", "AI research"]
+        per_query: 6
+        window_days: 2
+      - type: hackernews
+        keywords: ["LLM", "AI", "transformer", "agent"]
+        min_score: 80
+      - type: arxiv
+        categories: ["cs.CL", "cs.LG"]
+        max_results: 15
+      - type: rss
+        feeds:
+          - https://openai.com/blog/rss.xml
+          - https://blog.google/technology/ai/rss/
+
+  - id: local
+    title: "Around Town"
+    focus: Local news that affects daily life — transit, housing, city government.
+    max_items: 4
+    summary_style: Each summary is exactly one sentence stating the key fact.
+    sources:
+      - type: news
+        queries: ["Irvine California city council", "Orange County transit"]
+        per_query: 5
+        window_days: 3

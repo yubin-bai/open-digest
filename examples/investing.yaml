@@ -1,0 +1,48 @@
+# Markets — portfolio quotes plus the news behind the moves.
+# Run with:  python main.py -c examples/investing.yaml --print
+
+title: Market Brief
+language: English
+output_dir: data
+
+llm:
+  model: deepseek/deepseek-v4-pro
+
+delivery:
+  method: file
+
+topics:
+  - id: portfolio
+    title: "Portfolio"
+    kind: tickers            # rendered as a table, never sent to the LLM
+    symbols: ["NVDA", "AAPL", "MSFT", "BTC-USD"]
+    news_per_ticker: 2
+
+  - id: macro
+    title: "Macro"
+    focus: >
+      Central bank decisions, inflation and jobs data, and moves in rates.
+      Report what was announced and the number; skip forecasts and punditry.
+    max_items: 4
+    summary_style: >
+      Each summary is 2-3 sentences focused on concrete numbers, names, and dates
+      reported in the source.
+    sources:
+      - type: news
+        queries: ["Federal Reserve interest rate decision", "CPI inflation report",
+                  "jobs report unemployment"]
+        window_days: 2
+      - type: rss
+        feeds: ["https://feeds.content.dowjones.io/public/rss/mw_topstories"]
+
+  - id: sector
+    title: "Semiconductors"
+    focus: Earnings, supply chain, and export policy in the chip industry.
+    max_items: 3
+    sources:
+      - type: news
+        queries: ["semiconductor earnings", "chip export controls", "TSMC"]
+        window_days: 3
+      - type: hackernews
+        keywords: ["semiconductor", "chip", "GPU"]
+        min_score: 100

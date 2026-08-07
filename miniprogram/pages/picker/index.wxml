@@ -1,0 +1,54 @@
+<view class="page picker">
+
+  <view wx:if="{{loading}}" class="empty">
+    <text>加载中…</text>
+  </view>
+
+  <block wx:else>
+    <view class="intro">
+      <text class="title-lg">你关心什么？</text>
+      <text class="muted intro-sub">最多选 {{maxTopics}} 个。每天早上会把这几个方向的内容整理成一份简短摘要，随时可以改。</text>
+    </view>
+
+    <view wx:for="{{groups}}" wx:key="key" class="group">
+      <view class="section-title">{{item.label}}</view>
+      <view class="grid">
+        <view
+          wx:for="{{item.topics}}"
+          wx:for-item="topic"
+          wx:key="key"
+          class="chip {{selected.indexOf(topic.key) >= 0 ? 'chip-on' : ''}}"
+          data-key="{{topic.key}}"
+          bindtap="onTapTopic"
+        >
+          <text class="chip-label">{{topic.label}}</text>
+          <text class="chip-blurb">{{topic.blurb}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="group">
+      <view class="section-title">没有想要的？</view>
+      <view class="custom-entry" bindtap="onTapCustom">
+        <text class="custom-title">自己描述一个方向</text>
+        <text class="custom-sub">一句话说清你想看什么，比如「苹果和中国船舶的股价走势」</text>
+      </view>
+    </view>
+
+    <view class="spacer"></view>
+  </block>
+
+  <view class="footer-bar" wx:if="{{!loading}}">
+    <view class="picked">
+      <text class="picked-count">{{selected.length}}/{{maxTopics}}</text>
+      <text class="picked-names">{{selected.length ? '' : '还没选'}}</text>
+      <text wx:for="{{selected}}" wx:key="*this" class="picked-tag">{{labels[item] || item}}</text>
+    </view>
+    <view
+      class="btn-primary {{selected.length && !saving ? '' : 'disabled'}}"
+      style="flex: none; padding: 0 48rpx;"
+      bindtap="onSave"
+    >{{saving ? '保存中' : (isEdit ? '保存' : '开始')}}</view>
+  </view>
+
+</view>

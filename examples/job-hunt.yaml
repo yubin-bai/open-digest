@@ -1,0 +1,55 @@
+# Job hunting — new postings, company news, interview chatter, deadlines.
+# Run with:  python main.py -c examples/job-hunt.yaml --print
+
+title: Job Hunt Digest
+language: English
+output_dir: data
+
+llm:
+  model: deepseek/deepseek-v4-pro
+  fallback_model: anthropic/claude-fable-5
+
+delivery:
+  method: file
+
+topics:
+  - id: openings
+    title: "New Openings"
+    focus: >
+      Newly posted software and machine learning roles for new grads.
+      Prefer roles that offer visa sponsorship; note when they explicitly do not.
+    max_items: 10
+    summary_style: One line — location, level, and sponsorship status.
+    sources:
+      # Any public JSON endpoint works. `fields` maps their keys onto ours;
+      # "{a} — {b}" builds a string, a bare key copies one field.
+      - type: json_feed
+        url: https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json
+        fields:
+          title: "{company_name} — {title}"
+          summary: "{locations} · {sponsorship}"
+          url: "url"
+        date_field: date_posted
+        recent_days: 3
+        keywords: ["software", "machine learning", "infrastructure", "data"]
+
+  - id: hiring_news
+    title: "Hiring Climate"
+    focus: >
+      Layoffs, hiring freezes, and expansion at large tech employers.
+      Only concrete announcements, not commentary.
+    max_items: 4
+    sources:
+      - type: news
+        queries: ["tech layoffs", "tech company hiring freeze", "new grad hiring tech"]
+        window_days: 3
+      - type: reddit
+        subs: ["cscareerquestions"]
+        limit: 10
+
+  - id: deadlines
+    title: "Deadlines"
+    kind: countdown
+    deadlines:
+      - { name: "Referral request follow-up", date: "2026-09-01" }
+      - { name: "Google new-grad application close", date: "2026-10-15" }

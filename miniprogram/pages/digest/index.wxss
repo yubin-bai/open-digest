@@ -1,0 +1,118 @@
+.head {
+  margin-bottom: 28rpx;
+}
+
+.date {
+  display: block;
+  margin-top: 8rpx;
+}
+
+.headline {
+  background: #fff;
+  border-left: 6rpx solid #07c160;
+  border-radius: 12rpx;
+  padding: 24rpx 28rpx;
+  font-size: 29rpx;
+  line-height: 1.6;
+  margin-bottom: 36rpx;
+}
+
+.section {
+  margin-bottom: 36rpx;
+}
+
+.entry {
+  padding-bottom: 28rpx;
+  margin-bottom: 28rpx;
+  border-bottom: 2rpx solid #f0f2f4;
+}
+
+.entry.last {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.entry-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  line-height: 1.45;
+  margin-bottom: 12rpx;
+}
+
+.entry-summary {
+  display: block;
+  font-size: 27rpx;
+  color: #57606a;
+  line-height: 1.65;
+}
+
+.entry-hint {
+  display: block;
+  font-size: 22rpx;
+  color: #b1b8bf;
+  margin-top: 12rpx;
+}
+
+/* 行情 */
+.ticker {
+  display: flex;
+  align-items: baseline;
+  padding: 14rpx 0;
+}
+
+.tk-name {
+  font-weight: 600;
+  font-size: 29rpx;
+  width: 200rpx;
+}
+
+.tk-price {
+  flex: 1;
+  font-size: 29rpx;
+}
+
+.tk-pct {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.tk-pct.up {
+  color: #cf222e;
+}
+
+.tk-pct.down {
+  color: #1a7f37;
+}
+
+/* 倒计时 */
+.cd {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14rpx 0;
+}
+
+.cd-name {
+  font-size: 29rpx;
+}
+
+.cd-days {
+  font-size: 26rpx;
+  color: #8c959f;
+}
+
+.cd-days.soon {
+  color: #cf222e;
+  font-weight: 600;
+}
+
+.foot {
+  text-align: center;
+  padding: 24rpx 0 40rpx;
+}
+
+.edit-link {
+  margin-top: 40rpx;
+}

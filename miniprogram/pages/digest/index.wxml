@@ -1,0 +1,66 @@
+<view class="page digest">
+
+  <view wx:if="{{loading}}" class="empty">
+    <text>加载中…</text>
+  </view>
+
+  <view wx:elif="{{failed}}" class="empty">
+    <text class="empty-title">没连上</text>
+    <text>下拉试试，或者稍后再来</text>
+  </view>
+
+  <view wx:elif="{{!digest}}" class="empty">
+    <text class="empty-title">今天还没生成</text>
+    <text>{{reason || '每天早上更新，稍后再来看看'}}</text>
+    <view class="btn-ghost edit-link" bindtap="onEdit">改一下我关心的方向</view>
+  </view>
+
+  <block wx:else>
+    <view class="head">
+      <text class="title-lg">{{digest.title}}</text>
+      <text class="muted date">{{dateText}}</text>
+    </view>
+
+    <view wx:if="{{digest.headline}}" class="headline">{{digest.headline}}</view>
+
+    <view wx:for="{{digest.sections}}" wx:key="id" class="section">
+      <view class="section-title">{{item.title}}</view>
+
+      <view wx:if="{{item.kind === 'tickers'}}" class="card">
+        <view wx:for="{{item.rows}}" wx:for-item="row" wx:key="ticker" class="ticker">
+          <text class="tk-name">{{row.ticker}}</text>
+          <text class="tk-price">{{row.close}}</text>
+          <text class="tk-pct {{row.change_pct < 0 ? 'down' : 'up'}}">{{row.change_pct >= 0 ? '+' : ''}}{{row.change_pct}}%</text>
+        </view>
+      </view>
+
+      <view wx:elif="{{item.kind === 'countdown'}}" class="card">
+        <view wx:for="{{item.rows}}" wx:for-item="row" wx:key="name" class="cd">
+          <text class="cd-name">{{row.name}}</text>
+          <text class="cd-days {{row.days_left <= 30 ? 'soon' : ''}}">还剩 {{row.days_left}} 天</text>
+        </view>
+      </view>
+
+      <view wx:else class="card">
+        <view
+          wx:for="{{item.items}}"
+          wx:for-item="entry"
+          wx:key="url"
+          class="entry {{index === item.items.length - 1 ? 'last' : ''}}"
+          data-url="{{entry.url}}"
+          data-title="{{entry.title}}"
+          bindtap="onTapItem"
+        >
+          <text class="entry-title">{{entry.title}}</text>
+          <text class="entry-summary">{{entry.summary}}</text>
+          <text class="entry-hint">点击复制原文链接</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="foot">
+      <view class="btn-ghost" bindtap="onEdit">修改我关心的方向</view>
+    </view>
+  </block>
+
+</view>

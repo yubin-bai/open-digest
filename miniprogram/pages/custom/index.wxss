@@ -1,0 +1,74 @@
+.custom {
+  padding-bottom: 200rpx;
+}
+
+.sub {
+  display: block;
+  margin: 16rpx 0 40rpx;
+}
+
+.input {
+  width: 100%;
+  min-height: 160rpx;
+  font-size: 30rpx;
+  line-height: 1.6;
+}
+
+.ph {
+  color: #b1b8bf;
+}
+
+.counter {
+  display: block;
+  text-align: right;
+  font-size: 24rpx;
+  color: #b1b8bf;
+  margin-top: 12rpx;
+}
+
+.examples {
+  margin-top: 16rpx;
+}
+
+.ex {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  margin-top: 16rpx;
+  font-size: 26rpx;
+  color: #57606a;
+}
+
+.preview .pv-label {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.pv-focus {
+  display: block;
+  font-size: 27rpx;
+  color: #57606a;
+  line-height: 1.65;
+}
+
+.pv-divider {
+  height: 2rpx;
+  background: #eaeef2;
+  margin: 28rpx 0 24rpx;
+}
+
+.pv-src-title {
+  display: block;
+  font-size: 24rpx;
+  color: #8c959f;
+  margin-bottom: 10rpx;
+}
+
+.pv-src {
+  display: block;
+  font-size: 26rpx;
+  color: #1f2328;
+  word-break: break-all;
+}

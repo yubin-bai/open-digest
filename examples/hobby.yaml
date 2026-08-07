@@ -1,0 +1,53 @@
+# A non-technical example — nothing about this project assumes you work in tech.
+# Run with:  python main.py -c examples/hobby.yaml --print
+
+title: Weekend Reading
+language: English
+output_dir: data
+
+llm:
+  model: deepseek/deepseek-v4-pro
+
+delivery:
+  method: file
+
+topics:
+  - id: baking
+    title: "Baking"
+    focus: >
+      Sourdough and bread technique — hydration, fermentation, shaping.
+      Recipes and results only; skip equipment reviews and shop openings.
+    max_items: 4
+    summary_style: One sentence on the technique and what it changes.
+    sources:
+      - type: news
+        queries: ["sourdough technique", "bread baking science"]
+        window_days: 7
+      - type: reddit
+        subs: ["Sourdough", "Breadit"]
+        limit: 10
+
+  - id: birding
+    title: "Birding"
+    focus: Migration reports, rare sightings, and conservation news in California.
+    max_items: 3
+    sources:
+      - type: news
+        queries: ["California bird migration", "rare bird sighting California"]
+        window_days: 7
+      - type: rss
+        feeds: ["https://www.audubon.org/rss/news"]
+
+  - id: film
+    title: "Film"
+    focus: >
+      New releases and restorations worth seeing in a theater.
+      What the film is and why it stands out — no box office numbers.
+    max_items: 3
+    sources:
+      - type: news
+        queries: ["film festival premiere review", "4K restoration re-release"]
+        window_days: 7
+      - type: reddit
+        subs: ["TrueFilm"]
+        limit: 8

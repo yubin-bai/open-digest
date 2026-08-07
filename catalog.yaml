@@ -1,0 +1,226 @@
+# Preset topic catalog — what new users pick from.
+#
+# Why presets exist: a preset is fetched and summarized ONCE per day for the
+# whole platform, no matter how many people subscribe to it. A custom topic is
+# computed for one user. At 1,000 users x 3 topics that is the difference
+# between ~$0.10/day and ~$6/day, so the catalog should cover the common cases
+# well enough that most people never write a custom one.
+#
+# Adding a preset: give it a stable `key` (never reuse or rename — subscriptions
+# reference it), a `label` users see, and the same fields a topic takes in
+# digest.yaml. `group` controls how the picker organizes them.
+
+version: 1
+
+groups:
+  - key: tech
+    label: 科技
+  - key: market
+    label: 财经
+  - key: career
+    label: 职业
+  - key: life
+    label: 生活
+
+presets:
+  # ---------------------------------------------------------------- 科技
+  - key: ai
+    group: tech
+    label: AI 动态
+    blurb: 模型发布、研究结果、工具链变化
+    max_items: 5
+    focus: >
+      Model releases, notable research results, and shifts in AI tooling.
+      Exclude funding announcements, opinion columns, and product marketing.
+    sources:
+      - type: news
+        queries: ["large language model", "AI research breakthrough", "AI model release"]
+        per_query: 6
+        window_days: 2
+      - type: hackernews
+        keywords: ["LLM", "AI", "transformer", "agent"]
+        min_score: 80
+      - type: arxiv
+        categories: ["cs.CL", "cs.LG"]
+        max_results: 15
+
+  - key: dev
+    group: tech
+    label: 开发者
+    blurb: 语言、框架、基础设施
+    max_items: 5
+    focus: >
+      Programming language releases, framework updates, and infrastructure
+      tooling. Concrete releases and technical writeups only; skip career advice
+      and industry commentary.
+    sources:
+      - type: hackernews
+        keywords: ["release", "open source", "framework", "database"]
+        min_score: 100
+      - type: news
+        queries: ["software framework release", "developer tools"]
+        window_days: 2
+
+  - key: security
+    group: tech
+    label: 安全
+    blurb: 漏洞、数据泄露、安全更新
+    max_items: 4
+    focus: >
+      Disclosed vulnerabilities, breaches, and patches that affect widely used
+      software. State what is affected and what to do. No vendor marketing.
+    sources:
+      - type: news
+        queries: ["security vulnerability disclosed", "data breach", "zero-day exploit"]
+        window_days: 2
+      - type: hackernews
+        keywords: ["vulnerability", "CVE", "breach"]
+        min_score: 100
+
+  # ---------------------------------------------------------------- 财经
+  - key: macro
+    group: market
+    label: 宏观经济
+    blurb: 利率、通胀、就业数据
+    max_items: 4
+    focus: >
+      Central bank decisions, inflation and employment data, and rate moves.
+      Report the announcement and the number. No forecasts or punditry.
+    summary_style: >
+      Each summary is 2-3 sentences built around the concrete numbers, names and
+      dates reported in the source.
+    sources:
+      - type: news
+        queries: ["Federal Reserve rate decision", "inflation CPI report",
+                  "中国 央行 利率", "宏观经济 数据"]
+        window_days: 2
+
+  - key: a_shares
+    group: market
+    label: A 股
+    blurb: 沪深行情、政策、板块
+    max_items: 5
+    focus: >
+      A-share market moves, regulatory changes, and sector rotation.
+      What happened and the numbers behind it; exclude stock tips and
+      individual analyst price targets.
+    sources:
+      - type: news
+        queries: ["A股 行情", "沪深 指数", "证监会 政策", "北向资金"]
+        window_days: 2
+        lang: zh-CN
+        country: CN
+
+  - key: crypto
+    group: market
+    label: 加密货币
+    blurb: 行情、监管、链上动态
+    max_items: 4
+    focus: >
+      Price-moving events, regulatory decisions, and major protocol changes.
+      Exclude price predictions and promotional content about specific tokens.
+    sources:
+      - type: news
+        queries: ["bitcoin ethereum regulation", "crypto market"]
+        window_days: 2
+      - type: reddit
+        subs: ["CryptoCurrency"]
+        limit: 8
+
+  # ---------------------------------------------------------------- 职业
+  - key: jobs_newgrad
+    group: career
+    label: 应届岗位
+    blurb: 新开放的应届软件岗
+    max_items: 8
+    summary_style: One line — company, location, and sponsorship status.
+    focus: >
+      Newly posted new-grad software and machine learning roles.
+      Note explicitly when a role does not offer visa sponsorship.
+    sources:
+      - type: json_feed
+        url: https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json
+        fields:
+          title: "{company_name} — {title}"
+          summary: "{locations} · {sponsorship}"
+          url: "url"
+        date_field: date_posted
+        recent_days: 2
+        keywords: ["software", "machine learning", "data", "infrastructure"]
+
+  - key: hiring_climate
+    group: career
+    label: 就业市场
+    blurb: 裁员、冻编、扩招
+    max_items: 4
+    focus: >
+      Layoffs, hiring freezes, and expansion at large employers.
+      Concrete announcements only, not commentary about the job market.
+    sources:
+      - type: news
+        queries: ["tech layoffs", "hiring freeze", "互联网 裁员"]
+        window_days: 3
+      - type: reddit
+        subs: ["cscareerquestions"]
+        limit: 10
+
+  - key: grad_school
+    group: career
+    label: 研究生申请
+    blurb: 申请节奏、项目变动、经验帖
+    max_items: 4
+    focus: >
+      Graduate admissions news: program changes, funding decisions, and
+      application timeline shifts. Include useful applicant experience posts;
+      exclude individual "chance me" threads and result-only posts.
+    sources:
+      - type: reddit
+        subs: ["gradadmissions", "PhD"]
+        limit: 10
+      - type: news
+        queries: ["graduate admissions policy", "PhD funding cuts"]
+        window_days: 3
+
+  # ---------------------------------------------------------------- 生活
+  - key: health
+    group: life
+    label: 健康研究
+    blurb: 营养、睡眠、运动的新证据
+    max_items: 4
+    focus: >
+      Published findings on nutrition, sleep, and exercise. State the study
+      design and sample size alongside the finding. Exclude supplement
+      marketing, single-anecdote wellness claims, and diet trends.
+    sources:
+      - type: news
+        queries: ["nutrition study published", "sleep research", "exercise science study"]
+        window_days: 4
+
+  - key: film_tv
+    group: life
+    label: 影视
+    blurb: 新片、剧集、修复重映
+    max_items: 4
+    focus: >
+      New releases, notable series, and restorations worth watching.
+      What it is and what makes it distinctive. No box office numbers.
+    sources:
+      - type: news
+        queries: ["film review premiere", "new series streaming", "电影 上映"]
+        window_days: 4
+
+  - key: gaming
+    group: life
+    label: 游戏
+    blurb: 发售、更新、行业动态
+    max_items: 4
+    focus: >
+      Game releases, major updates, and industry news. Concrete announcements;
+      skip review scores and rumor roundups.
+    sources:
+      - type: news
+        queries: ["game release date announced", "游戏 发售"]
+        window_days: 3
+      - type: reddit
+        subs: ["Games"]
+        limit: 10
