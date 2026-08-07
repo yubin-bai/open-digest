@@ -100,6 +100,18 @@ def require_openid(fn):
 
 
 # --------------------------------------------------------------------------
+@app.get("/")
+def index():
+    """Landing page. Exists so hitting the bare URL tells you something useful
+    instead of a bare 404 — the first thing anyone does after deploying."""
+    return ok(service="open-digest",
+              topics_in_catalog=len(catalog.presets),
+              wx_cloud=wechat.in_cloud(),
+              endpoints=sorted(
+                  str(r.rule) for r in app.url_map.iter_rules()
+                  if str(r.rule).startswith(("/api", "/health"))))
+
+
 @app.get("/health")
 def health():
     return ok(service="open-digest", topics_in_catalog=len(catalog.presets))

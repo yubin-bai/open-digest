@@ -103,7 +103,8 @@ def test_api_contract():
     unknown = called - routes
     check(f"all {len(called)} called paths exist in api.py", not unknown, str(unknown))
 
-    unused = routes - called - {"/health"}
+    # "/" and "/health" are for humans and the platform's probe, not the client
+    unused = routes - called - {"/health", "/"}
     check("no route is silently unreachable from the client",
           not unused, f"unused: {unused}")
 
@@ -153,14 +154,23 @@ def test_section_kinds_covered():
               f"'{k}'" in wxml or k == "items" and "wx:else" in wxml)
 
 
-def test_no_placeholders_left_unmarked():
-    print("\nplaceholders are obvious")
+def test_config_is_fillable():
+    """Config must be either an obvious placeholder or a real, valid value —
+    never something in between that fails silently at runtime."""
+    print("\nconfig values")
     cfg = read("utils/config.js")
-    check("CLOUD_ENV is an obvious placeholder", "xxxxxxxx" in cfg)
-    check("DEV_BASE_URL defaults to empty (production path)",
-          re.search(r"DEV_BASE_URL:\s*''", cfg) is not None)
-    proj = read("project.config.json")
-    check("appid is an obvious placeholder", "YOUR_APPID" in proj)
+    env = re.search(r"CLOUD_ENV:\s*'([^']*)'", cfg).group(1)
+    check("CLOUD_ENV is a placeholder or a real env id",
+          "xxxx" in env or re.fullmatch(r"[a-z]+-[0-9a-z]{6,}", env), env)
+    check("DEV_BASE_URL is empty (production path)",
+          re.search(r"DEV_BASE_URL:\s*''", cfg) is not None,
+          "still pointing at a local server — clear it before publishing")
+    check("SERVICE_NAME is set",
+          bool(re.search(r"SERVICE_NAME:\s*'\S+'", cfg)))
+
+    appid = re.search(r'"appid":\s*"([^"]*)"', read("project.config.json")).group(1)
+    check("appid is a placeholder or a real wx appid",
+          "YOUR_APPID" in appid or re.fullmatch(r"wx[0-9a-f]{16}", appid), appid)
 
 
 def test_external_links_not_opened():
@@ -185,7 +195,7 @@ if __name__ == "__main__":
     test_wxml_no_html_tags()
     test_api_contract()
     test_section_kinds_covered()
-    test_no_placeholders_left_unmarked()
+    test_config_is_fillable()
     test_external_links_not_opened()
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:
